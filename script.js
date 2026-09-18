@@ -231,6 +231,7 @@ function renderCustomizer(){
   let html = `
     <div class="cz-hero"><img src="${p.img}" alt="${p.name}"></div>
     <h3 class="cz-title">${p.name}</h3>
+    <p class="cz-description">${p.desc}</p>
     <div class="cz-price" id="czLivePrice">${fmt(calcUnitPrice())}</div>
   `;
 
