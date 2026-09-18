@@ -224,6 +224,20 @@ function optionRow({selected, name, extra, kind, onClickAttr}){
   `;
 }
 
+function getCustomizerDescription(product){
+  if(!product.customizable) return product.desc;
+
+  const selections = [
+    BUN_OPTIONS.find(option => option.id === czState.bun)?.name,
+    PROTEIN_OPTIONS.find(option => option.id === czState.protein)?.name,
+    CHEESE_OPTIONS.find(option => option.id === czState.cheese)?.name,
+    ...VEGGIE_TOGGLES.filter(option => czState.veggies[option.id]).map(option => option.name),
+    SAUCE_OPTIONS.find(option => option.id === czState.sauce)?.name,
+  ].filter(Boolean);
+
+  return selections.join(', ');
+}
+
 function renderCustomizer(){
   const scroll = document.getElementById('czScroll');
   const p = activeProduct;
@@ -231,7 +245,7 @@ function renderCustomizer(){
   let html = `
     <div class="cz-hero"><img src="${p.img}" alt="${p.name}"></div>
     <h3 class="cz-title">${p.name}</h3>
-    <p class="cz-description">${p.desc}</p>
+    <p class="cz-description">${getCustomizerDescription(p)}</p>
     <div class="cz-price" id="czLivePrice">${fmt(calcUnitPrice())}</div>
   `;
 
