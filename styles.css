@@ -272,14 +272,24 @@ button:active{ transform: scale(0.94); }
 /* ============================================================
    FLOATING CART BAR
    ============================================================ */
-.cart-fab{
+.cart-fab {
   position: sticky; bottom: 74px; margin: 0 20px 10px; background: var(--green-dark); color: #fff;
   border-radius: 18px; padding: 13px 16px; display:flex; align-items:center; justify-content:space-between;
   box-shadow: var(--shadow-pop); transform: translateY(140%) scale(.9); opacity:0;
   transition: transform .32s var(--ease-spring), opacity .28s ease;
   z-index: 39; border:none; width: calc(100% - 40px);
+  
+  /* NUEVO: Ignora los clics cuando está invisible */
+  pointer-events: none; 
 }
-.cart-fab.show{transform: translateY(0) scale(1); opacity:1;}
+
+.cart-fab.show {
+  transform: translateY(0) scale(1); 
+  opacity: 1;
+  
+  /* NUEVO: Vuelve a aceptar clics cuando aparece */
+  pointer-events: auto; 
+}
 .cart-fab.bump{ animation: bump .38s var(--ease-spring); }
 @keyframes bump{ 0%{transform:scale(1);} 35%{transform:scale(1.06);} 100%{transform:scale(1);} }
 .cart-fab .l{display:flex;align-items:center;gap:10px;text-align:left;}
@@ -551,15 +561,20 @@ button:active{ transform: scale(0.94); }
   body { background: var(--cream); }
   .app-shell { width: 100%; max-width: none; }
   
-  /* Aumentamos el padding para que el botón no tape los últimos productos de la lista */
+  /* Margen inferior para no tapar los últimos productos */
   .phone { max-width: none; padding-bottom: 140px; } 
   
   .cart-fab {
     position: fixed;
     left: 20px;
-    bottom: 90px; /* Lo subimos para que no choque con el menú */
+    bottom: 90px;
     margin: 0;
     width: calc(100% - 40px);
-    z-index: 41; /* Nos aseguramos de que siempre esté por encima del menú (que tiene 40) */
+    z-index: 41;
+    pointer-events: none; /* Bloquea clics al estar oculto */
+  }
+
+  .cart-fab.show {
+    pointer-events: auto; /* Permite clics solo cuando se hace visible */
   }
 }
