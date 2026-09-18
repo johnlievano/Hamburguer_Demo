@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Verde Brasa — Pide en línea</title>
+<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
+<meta name="description" content="Demo de app de pedidos para restaurante de hamburguesas, salchipapas y almuerzos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ================= TELÉFONO / APP PRINCIPAL ================= -->
+  <div class="phone" id="phone">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="locrow">
+        <div class="brandmark"><span>HB</span></div>
+        <div class="loc-text">
+          <div class="loc-label">Restaurante</div>
+          <div class="loc-value">Hamburgueame</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notificationsBtn" aria-label="Notificaciones">
+          <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
+        </button>
+        <button class="icon-btn" id="openOrdersBtn" aria-label="Mis pedidos">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4z"/><path d="M4 8l1 12h14l1-12"/><path d="M9 12h6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" id="searchInput" placeholder="¿Qué se te antoja hoy?">
+      </div>
+    </div>
+
+    <!-- CATEGORY CHIPS -->
+    <div class="chip-row" id="chipRow"></div>
+
+    <!-- HOME VIEW -->
+    <div id="homeView">
+      <!-- PROMO -->
+      <button class="promo" id="promoBtn" type="button" aria-label="Aplicar código de descuento VERDE30">
+        <div class="promo-glow"></div>
+        <div class="promo-text">
+          <div class="promo-eyebrow">Oferta de hoy</div>
+          <div class="promo-pct">30% OFF</div>
+          <div class="promo-copy">En hamburguesas armadas por ti. Solo por hoy.</div>
+        </div>
+        <img class="promo-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80" alt="Hamburguesa Verde Brasa">
+      </button>
+
+      <div class="section">
+        <div class="section-head">
+          <h2 id="sectionTitle">Todo el menú</h2>
+          <button class="link" id="viewAllBtn" type="button">Ver todo</button>
+        </div>
+        <div class="menu-grid" id="menuGrid"></div>
+      </div>
+    </div>
+
+    <!-- ORDERS VIEW (tracking) -->
+    <div id="ordersView" class="hidden order-view"></div>
+
+    <!-- PROFILE VIEW -->
+    <div id="profileView" class="hidden" style="padding:8px 20px 20px;">
+      <div style="text-align:center;padding:40px 10px;">
+        <div class="profile-avatar">JC</div>
+        <h3 style="font-size:18px;margin-bottom:4px;">John Cliente</h3>
+        <p style="font-size:12.5px;color:var(--smoke);">Demo de vista — no requiere inicio de sesión real</p>
+      </div>
+      <div class="profile-actions">
+        <div class="profile-mode-card">
+          <div>
+            <strong>Modo administrador</strong>
+            <span>Gestiona pedidos y tickets de cocina</span>
+          </div>
+          <button class="switch-control" id="adminModeToggle" type="button" aria-label="Cambiar a modo administrador" aria-pressed="false"><span></span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOATING CART BAR -->
+    <button class="cart-fab" id="cartFab">
+      <div class="l">
+        <span class="count" id="cartFabCount">0</span>
+        <span class="lbl">Ver mi orden</span>
+      </div>
+      <div class="r">
+        <span id="cartFabTotal">$0</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+    </button>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-item active" data-nav="home">
+        <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        Inicio
+      </button>
+      <button class="nav-item" data-nav="orders">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 10h8M8 14h5"/></svg>
+        Pedidos
+      </button>
+      <button class="nav-item" data-nav="cart">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2l2.6 12.6a2 2 0 002 1.6h8.7a2 2 0 002-1.6L21 7H6"/></svg>
+        Carrito
+      </button>
+      <button class="nav-item" data-nav="profile">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        Perfil
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= PANEL LATERAL (solo escritorio) ================= -->
+  <div class="side-panel" id="sidePanel">
+    <div class="desktop-hint"><b>Vista de escritorio.</b> El menú se navega igual que en el celular; aquí a la derecha ves tu orden activa en todo momento.</div>
+    <div id="sidePanelContent" class="side-panel-content"></div>
+  </div>
+
+  <!-- ================= DASHBOARD ADMINISTRADOR ================= -->
+  <main class="admin-dashboard hidden" id="adminView">
+    <div class="admin-topbar">
+      <div>
+        <span class="admin-kicker">OPERACIÓN EN VIVO</span>
+        <h1>Panel de pedidos</h1>
+        <p>Gestiona la cola de Verde Brasa desde un solo lugar.</p>
+      </div>
+      <button class="admin-exit" id="adminExitBtn" type="button"><span>←</span> Volver a cliente</button>
+    </div>
+    <div class="admin-stats" id="adminStats"></div>
+    <section class="admin-queue-section">
+      <div class="admin-section-head">
+        <div><span class="admin-kicker">TICKETS</span><h2>Cola de cocina</h2></div>
+        <span class="queue-live"><i></i> Actualizado ahora</span>
+      </div>
+      <div class="admin-queue" id="adminQueue"></div>
+    </section>
+  </main>
+</div>
+
+<!-- ================= OVERLAY + SHEETS ================= -->
+<div class="overlay" id="overlay"></div>
+
+<!-- CUSTOMIZER SHEET -->
+<div class="sheet" id="czSheet">
+  <div class="sheet-handle"></div>
+  <button class="sheet-close" id="czClose"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="sheet-scroll" id="czScroll"></div>
+  <div class="cz-footer">
+    <div class="qty-ctrl">
+      <button class="qty-btn" id="czMinus">–</button>
+      <span class="qty-num" id="czQty">1</span>
+      <button class="qty-btn" id="czPlus">+</button>
+    </div>
+    <button class="btn-primary" id="czAddBtn">
+      <span class="l">Agregar</span>
+      <span class="r" id="czAddPrice">$0</span>
+    </button>
+  </div>
+</div>
+
+<!-- CART SHEET -->
+<div class="sheet" id="cartSheet" style="max-height:92vh;">
+  <div class="sheet-handle"></div>
+  <button class="sheet-close" id="cartClose"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div class="sheet-scroll" id="cartScroll" style="padding-top:16px;">
+    <h3 style="font-size:19px;margin-bottom:14px;">Tu orden</h3>
+    <div id="cartItemsWrap"></div>
+  </div>
+  <div class="cz-footer" id="cartFooter" style="flex-direction:column;align-items:stretch;">
+    <div id="cartSummary"></div>
+    <div id="paymentOptions" class="payment-options"></div>
+    <button class="btn-primary" id="checkoutBtn" style="margin-top:10px;">
+      <span class="l">Pagar y confirmar</span>
+      <span class="r" id="checkoutTotal">$0</span>
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
