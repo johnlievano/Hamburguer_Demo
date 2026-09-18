@@ -548,12 +548,18 @@ button:active{ transform: scale(0.94); }
 @keyframes viewFade{ from{opacity:0; transform: translateY(6px);} to{opacity:1; transform:none;} }
 
 @media (max-width:899px){
-  body{background:var(--cream);}
-  .app-shell{width:100%;max-width:none;}
-  .phone{max-width:none;padding-bottom:76px;}
-  .cart-fab{position:fixed;left:20px;bottom:74px;margin:0;width:calc(100% - 40px);}
-}
-
-@media (min-width:900px){
-  .bottom-nav{position:sticky;left:auto;bottom:0;width:auto;}
+  body { background: var(--cream); }
+  .app-shell { width: 100%; max-width: none; }
+  
+  /* Aumentamos el padding para que el botón no tape los últimos productos de la lista */
+  .phone { max-width: none; padding-bottom: 140px; } 
+  
+  .cart-fab {
+    position: fixed;
+    left: 20px;
+    bottom: 90px; /* Lo subimos para que no choque con el menú */
+    margin: 0;
+    width: calc(100% - 40px);
+    z-index: 41; /* Nos aseguramos de que siempre esté por encima del menú (que tiene 40) */
+  }
 }
