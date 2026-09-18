@@ -818,3 +818,45 @@ chipRow.addEventListener('mousemove', (e) => {
   const walk = (x - startX) * 1.5; // Multiplicador de velocidad de arrastre
   chipRow.scrollLeft = scrollLeft - walk;
 });
+
+/* ============================================================
+   GESTO DE DESLIZAR ABAJO PARA CERRAR SHEETS
+   ============================================================ */
+document.querySelectorAll('.sheet').forEach(sheet => {
+  let startY = 0;
+  let currentY = 0;
+
+  sheet.addEventListener('touchstart', (e) => {
+    // Solo inicia el arrastre si el scroll interno del modal está arriba del todo
+    const scrollEl = sheet.querySelector('.sheet-scroll');
+    if (scrollEl && scrollEl.scrollTop > 0) return;
+    
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  sheet.addEventListener('touchmove', (e) => {
+    if (!startY) return;
+    currentY = e.touches[0].clientY;
+    const diffY = currentY - startY;
+
+    // Si el movimiento es hacia abajo, movemos el sheet con el dedo
+    if (diffY > 0) {
+      sheet.style.transform = `translate(-50%, ${diffY}px)`;
+    }
+  }, { passive: true });
+
+  sheet.addEventListener('touchend', () => {
+    if (!startY) return;
+    const diffY = currentY - startY;
+
+    // Si se arrastró más de 120px hacia abajo, cerramos el panel
+    if (diffY > 120) {
+      closeSheet(sheet.id);
+    }
+    
+    // Reseteamos la posición
+    sheet.style.transform = '';
+    startY = 0;
+    currentY = 0;
+  });
+});

@@ -578,3 +578,8 @@ button:active{ transform: scale(0.94); }
     pointer-events: auto; /* Permite clics solo cuando se hace visible */
   }
 }
+
+/* Evita que el navegador recargue la página al deslizar hacia abajo en móvil */
+html, body {
+  overscroll-behavior-y: contain;
+}
